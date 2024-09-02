@@ -1,43 +1,41 @@
-import React, { useState, useEffect } from "react"
-
-import './Clock.css'
-import DialImg from "/dial.png"
-import HoursImg from "/hours.png"
-import MinuetsImg from "/minuets.png"
-import SecImg from "/sec.png"
+import React, { useState, useEffect } from "react";
+import './Clock.css';
+import DialImg from "/dial.png";
+import Dial2Img from "/dial-2.png";
+import HoursImg from "/hours.png";
+import MinuetsImg from "/minuets.png";
+import SecImg from "/sec.png";
 
 const Clock = () => {
-  const [time, setTime] = useState(new Date())
+  const [time, setTime] = useState(new Date());
 
   useEffect(() => {
-    setInterval(() => {
-      setTime(new Date())
+    const interval = setInterval(() => {
+      setTime(new Date());
     }, 1000);
-  }, [])
+    return () => clearInterval(interval);
+  }, []);
 
-  const hours = time.getHours()
-  const minuets = time.getMinutes()
-  const seconds = time.getSeconds()
-  const hoursDeg = (hours % 12) * 30 + minuets + 0.5
-  const minuetsDeg = minuets * 6
-  const secondsDeg = seconds * 6
-  // console.log(hours, minuets)
+  const hours = time.getHours() + 2;
+  const minuets = time.getMinutes();
+  const seconds = time.getSeconds();
+
+  // Calculate rotation degrees for each hand
+  // const hoursDeg = 0;
+  const hoursDeg = ((hours % 12) * 30 + minuets / 2) + 107;
+  const minuetsDeg = (minuets * 6) + 180;
+  const secondsDeg = seconds * 6;
 
   return (
     <div className="clock">
       <div className="dot"></div>
-      {/* <div>
-        {hours}
-        {minuets}
-        {seconds}
-      </div> */}
-      <div className="inner"></div>
-      <img className="dial" src={DialImg} alt="" />
-      <img className="hours" src={HoursImg} alt="" style={{ transform: `rotate(${hoursDeg}deg)` }} />
-      <img className="minuets" src={MinuetsImg} alt="" style={{ transform: `rotate(${minuetsDeg}deg)` }} />
-      <img className="seconds" src={SecImg} alt="" style={{ transform: `rotate(${secondsDeg}deg)` }} />
+      <img className="hours" src={HoursImg} alt="Hours Hand" style={{ transform: `rotate(${hoursDeg}deg)` }} />
+      <img className="minuets" src={MinuetsImg} alt="Minutes Hand" style={{ transform: `rotate(${minuetsDeg}deg)` }} />
+      <img className="seconds" src={SecImg} alt="Seconds Hand" style={{ transform: `rotate(${secondsDeg}deg)` }} />
+      <img className="dial" src={DialImg} alt="Dial" />
+      <img className="dial" src={Dial2Img} alt="Dial" />
     </div>
-  )
+  );
 }
 
 export default Clock;
